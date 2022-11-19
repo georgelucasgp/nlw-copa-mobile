@@ -1,9 +1,9 @@
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { PlusCircle, SoccerBall } from "phosphor-react-native";
-import { useTheme } from "native-base";
-import { New } from "../screens/New";
-import { Polls } from "../screens/Polls";
-import { Find } from "../screens/Find";
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { PlusCircle, SoccerBall } from 'phosphor-react-native';
+import { useTheme } from 'native-base';
+import { New } from '../screens/New';
+import { Polls } from '../screens/Polls';
+import { Find } from '../screens/Find';
 
 const { Navigator, Screen } = createBottomTabNavigator();
 
@@ -14,11 +14,11 @@ export function AppRoutes() {
     <Navigator
       screenOptions={{
         headerShown: false,
-        tabBarLabelPosition: "beside-icon",
+        tabBarLabelPosition: 'beside-icon',
         tabBarActiveTintColor: colors.yellow[500],
         tabBarInactiveTintColor: colors.gray[300],
         tabBarStyle: {
-          position: "absolute",
+          position: 'absolute',
           height: sizes[22],
           borderTopWidth: 0,
           backgroundColor: colors.gray[800],
@@ -31,7 +31,7 @@ export function AppRoutes() {
         component={New}
         options={{
           tabBarIcon: ({ color }) => <PlusCircle color={color} size={size} />,
-          tabBarLabel: "Novo Bolão",
+          tabBarLabel: 'Novo Bolão',
         }}
       />
       <Screen
@@ -39,7 +39,7 @@ export function AppRoutes() {
         component={Polls}
         options={{
           tabBarIcon: ({ color }) => <SoccerBall color={color} size={size} />,
-          tabBarLabel: "Meus Bolões",
+          tabBarLabel: 'Meus Bolões',
         }}
       />
 
