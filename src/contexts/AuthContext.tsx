@@ -1,7 +1,8 @@
-import { createContext, useState, useEffect } from "react";
-import * as Google from "expo-auth-session/providers/google";
-import * as AuthSession from "expo-auth-session";
-import * as WebBrowser from "expo-web-browser";
+import { createContext, useState, useEffect } from 'react';
+import * as Google from 'expo-auth-session/providers/google';
+import * as AuthSession from 'expo-auth-session';
+import * as WebBrowser from 'expo-web-browser';
+import { api } from '../services/api';
 
 WebBrowser.maybeCompleteAuthSession();
 interface UserProps {
@@ -26,10 +27,9 @@ export function AuthContextProvider({ children }: AuthProviderProps) {
   const [isUserLoading, setIsUserLoading] = useState(false);
 
   const [request, response, promptAsync] = Google.useAuthRequest({
-    clientId:
-      "923134034106-8psnnpub9r7cdn4irpsdop9pqh8vgtkp.apps.googleusercontent.com",
+    clientId: '923134034106-8psnnpub9r7cdn4irpsdop9pqh8vgtkp.apps.googleusercontent.com',
     redirectUri: AuthSession.makeRedirectUri({ useProxy: true }),
-    scopes: ["profile", "email"],
+    scopes: ['profile', 'email'],
   });
 
   async function signIn() {
@@ -45,11 +45,24 @@ export function AuthContextProvider({ children }: AuthProviderProps) {
   }
 
   async function signInWithGoogle(access_token: string) {
-    console.log("TOKEN", access_token);
+    try {
+      setIsUserLoading(true);
+      const tokenResponse = await api.post('/users', {
+        access_token,
+      });
+      api.defaults.headers.authorization = `Bearer ${tokenResponse.data.token}`;
+      const userInfoResponse = await api.get('/me');
+      setUser(userInfoResponse.data.user);
+    } catch (error) {
+      console.log(error);
+      throw error;
+    } finally {
+      setIsUserLoading(false);
+    }
   }
 
   useEffect(() => {
-    if (response?.type === "success" && response.authentication?.accessToken) {
+    if (response?.type === 'success' && response.authentication?.accessToken) {
       signInWithGoogle(response.authentication.accessToken);
     }
   }, [response]);
