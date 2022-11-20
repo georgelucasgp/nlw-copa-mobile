@@ -44,7 +44,7 @@ export function Polls() {
   );
   return (
     <VStack flex={1} bgColor="gray.900">
-      <Header title="Meus bolões" />
+      <Header title="Meus bolões" onShare={() => {}} />
       <VStack mt={6} mx={5} borderBottomWidth={1} borderBottomColor="gray.600" pb={4} mb={4}>
         <Button
           title="BUSCAR BOLÃO POR CÓDIGO"
@@ -58,7 +58,9 @@ export function Polls() {
         <FlatList
           data={polls}
           keyExtractor={(item) => item.id}
-          renderItem={({ item }) => <PoolCard data={item} />}
+          renderItem={({ item }) => (
+            <PoolCard data={item} onPress={() => navigate('details', { id: item.id })} />
+          )}
           ListEmptyComponent={() => <EmptyPoolList />}
           showsVerticalScrollIndicator={false}
           _contentContainerStyle={{ pb: 10 }}
